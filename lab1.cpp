@@ -34,101 +34,111 @@ Wszystkie wyniki wyprowadź na ekran operatorem <<.
 using namespace std;
 
 class Iwektor3D {
-        int *tab; 
-    public: 
+        int *tab;
+    public:
         Iwektor3D();
         Iwektor3D(int a, int b, int c);
         ~Iwektor3D();
         Iwektor3D operator+(const Iwektor3D& w);
         Iwektor3D operator-(const Iwektor3D& w);
-        int operator*(const Iwektor3D& w);
+        Iwektor3D operator*(int v)const;
+        friend Iwektor3D operator*(int v, const Iwektor3D& w);
+        Iwektor3D operator*(const Iwektor3D& w); //iloczyn skalarny!!!!
+        friend ostream& operator<<(ostream& os, const Iwektor3D& w); 
         Iwektor3D operator-();
-        Iwektor3D operator*(int val);
-        void print_wektor()const;
-
+        Iwektor3D(const Iwektor3D& w); //konstruktor kopiujacy
+        Iwektor3D& operator=(const Iwektor3D& w); //operator przypisania
+        const int& operator[](int index)const; //operator indeksowania dla pobierania wartosci
+        int& operator[](int index); //operator indeksowania dla ustawiania wartosci
 };
 
 Iwektor3D::Iwektor3D(){
     tab = new int[3];
-    for(int i = 0; i < 3; i++){
-        tab[i] = 0;
-    }
-}
-
-void Iwektor3D::print_wektor()const{
-    cout << tab[0] << " " << tab[1] << " " << tab[2] << endl;
 }
 
 Iwektor3D::Iwektor3D(int a, int b, int c){
     tab = new int[3];
-    tab[0] = a;
+    tab[0] = a; 
     tab[1] = b;
     tab[2] = c;
 }
 
 Iwektor3D::~Iwektor3D(){
-    delete tab;
+    delete[] tab;
 }
 
 Iwektor3D Iwektor3D::operator+(const Iwektor3D& w){
-    int a = this->tab[0] + w.tab[0];
-    int b = this->tab[1] + w.tab[1];
-    int c = this->tab[2] + w.tab[2];
-    Iwektor3D W;
-    W.tab[0] = a;
-    W.tab[1] = b;
-    W.tab[2] = c; 
+    Iwektor3D W(this->tab[0]+w.tab[0], this->tab[1]+w.tab[1], this->tab[2]+w.tab[2]);
     return W;
 }
 
 Iwektor3D Iwektor3D::operator-(const Iwektor3D& w){
-    int a = this->tab[0] - w.tab[0];
-    int b = this->tab[1] - w.tab[1];
-    int c = this->tab[2] - w.tab[2];
-    Iwektor3D W;
-    W.tab[0] = a;
-    W.tab[1] = b;
-    W.tab[2] = c; 
+    Iwektor3D W(this->tab[0]-w.tab[0], this->tab[1]-w.tab[1], this->tab[2]-w.tab[2]);
     return W;
 }
 
-int Iwektor3D::operator*(const Iwektor3D& w){
-    int wynik;
-    wynik = this->tab[0] * w.tab[0] + this->tab[1] * w.tab[1] + this->tab[2] * w.tab[2];
-    return wynik;
+Iwektor3D Iwektor3D::operator*(int v)const{
+    Iwektor3D W(this->tab[0]*v, this->tab[1]*v, this->tab[2]*v);
+    return W;
+}
+
+Iwektor3D operator*(int v, const Iwektor3D& w){
+    Iwektor3D W(w.tab[0]*v, w.tab[1]*v, w.tab[2]*v);
+    return W;
+}
+
+Iwektor3D Iwektor3D::operator*(const Iwektor3D& w){
+    Iwektor3D W(this->tab[0]*w.tab[0], this->tab[1]*w.tab[1], this->tab[2]*w.tab[2]);
+    return W;
+}
+
+ostream& operator<<(ostream& os, const Iwektor3D& w){
+    os << "(" << w.tab[0] << ", " << w.tab[1] << ", " << w.tab[2] << ")" << endl;
+    return os;
 }
 
 Iwektor3D Iwektor3D::operator-(){
-    Iwektor3D W;
-    for(int i = 0; i < 3; i++)
-        W.tab[i] = this->tab[i] * (-1);
+    Iwektor3D W(-this->tab[0], -this->tab[1], this->tab[2]);
     return W;
 }
 
-Iwektor3D Iwektor3D::operator*(int val){
-    Iwektor3D W;
-    for(int i = 0; i < 3; i++){
-        W.tab[i] = this->tab[i]*val;
+Iwektor3D::Iwektor3D(const Iwektor3D& w){
+    tab = new int[3];
+    this->tab[0] = w.tab[0];
+    this->tab[1] = w.tab[1];
+    this->tab[2] = w.tab[2];
+}
+
+Iwektor3D& Iwektor3D::operator=(const Iwektor3D& w){
+    if(this != &w){
+        tab[0] = w.tab[0];
+        tab[1] = w.tab[1];
+        tab[2] = w.tab[2];
     }
-    return W;
+    return *this;
+}
+
+int& Iwektor3D::operator[](int index){
+    return tab[index];
+}
+
+const int& Iwektor3D::operator[](int index)const{
+    return tab[index];
 }
 
 
-int main (void){
+int main(){
+
     Iwektor3D v1(2,2,2);
-    v1.print_wektor();
     Iwektor3D v2(1,1,1);
-    v2.print_wektor();
-    Iwektor3D v3 = v1 + v2;
-    v3.print_wektor();
-    Iwektor3D v4 = v1 - v2;
-    v4.print_wektor();
-    Iwektor3D v5 = v1*2; 
-    v5.print_wektor();
-    //Iwektor3D v6 = 2*v1;
-    int w = v1*v2;
-    cout << w << endl;
-    Iwektor3D v8 = -v2;
-    v8.print_wektor();
+    cout << v1 + v2;
+    cout << v1 - v2;
+    cout<< v1 * 2;
+    cout << 2 * v1;
+    cout << v1 * v2; 
+    cout << (v1[0]==(v2[0]=2*v2[0]));
+    cout << (v1[0]!=(v2[0]=2*v2[0]));
+    cout << -v2;
+
     return 0;
 }
