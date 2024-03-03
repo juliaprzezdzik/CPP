@@ -1,55 +1,91 @@
-/*
-Zaimplementuj klasę wektora Iwektor3D liczb typu int o rozmiarze 3, które wewnętrznie przechowywane są w postaci alokowanej dynamicznie tablicy (a nie std::vectora !) uwzględniając:
-
-konstruktory (w tym kopiujący)
-destruktor,
-oraz następujące przeładowane operatory:
-
-operator przypisania,
-operatory + i - (dodawanie i odejmowanie wektorów),
-operator mnożenia przez liczbę całkowitą (powinien umożliwiać mnożenie z obu stron),
-operator mnożenia wektora przez wektor (iloczyn skalarny),
-operator [] (powinien umożliwiać zarówno pobieranie jak i ustawienie składowej wektora),
-jednoargumentowy operator - (zamiana na wektor przeciwny).
-<< wstawianie wektora do strumienia wyjściowego.
-Następnie zainicjuj dwa wektory:
-
-v1=(2,2,2) i v2=(1,1,1)
-
-i wypisz na standardowe wyjście wynik następujących operacji (w tej kolejności !):
-
-v1+v2
-v1-v2
-v1*2
-2*v1
-v1*v2
-v1[0]==(v2[0]=2*v2[0])
-v1[0]!=(v2[0]=2*v2[0])
--v2
-Wszystkie wyniki wyprowadź na ekran operatorem <<.
-*/
+/**
+ * @file lab1.cpp
+ * @brief klasa wektora Iwektor3D typu int o rozmiarze 3 wraz z odpowiednimi metodami
+ */
 
 #include <iostream>
 
 using namespace std;
 
+/**
+ * @class Iwektor3D
+ * @brief klasa reprezentuje wektor trojwymiarowy
+ */
 class Iwektor3D {
-        int *tab;
-    public:
-        Iwektor3D();
-        Iwektor3D(int a, int b, int c);
-        ~Iwektor3D();
-        Iwektor3D operator+(const Iwektor3D& w);
-        Iwektor3D operator-(const Iwektor3D& w);
-        Iwektor3D operator*(int v)const;
-        friend Iwektor3D operator*(int v, const Iwektor3D& w);
-        Iwektor3D operator*(const Iwektor3D& w); //iloczyn skalarny!!!!
-        friend ostream& operator<<(ostream& os, const Iwektor3D& w); 
-        Iwektor3D operator-();
-        Iwektor3D(const Iwektor3D& w); //konstruktor kopiujacy
-        Iwektor3D& operator=(const Iwektor3D& w); //operator przypisania
-        const int& operator[](int index)const; //operator indeksowania dla pobierania wartosci
-        int& operator[](int index); //operator indeksowania dla ustawiania wartosci
+    int *tab; /**< wskaznik na tablice przechowujaca wspolrzedne wektora */
+public:
+    /**
+     * @brief konstruktor domsylny
+     */
+    Iwektor3D();
+
+    /**
+     * @brief konstruktor tworzacy wektor
+     * @param a - pierwsza wspolrzedna
+     * @param b - druga wspolrzedna
+     * @param c - trzecia wspolrzedna
+     */
+    Iwektor3D(int a, int b, int c);
+
+    /**
+     * @brief destruktor
+     */
+    ~Iwektor3D();
+
+    /**
+     * @brief operator dodawania
+     */
+    Iwektor3D operator+(const Iwektor3D& w);
+
+    /**
+     * @brief operator odejmowania
+     */
+    Iwektor3D operator-(const Iwektor3D& w);
+
+    /**
+     * @brief operator mnozenia
+     */
+    Iwektor3D operator*(int v)const;
+
+    /**
+     * @brief funkcja mnozaca operator razy liczbe typu int
+     */
+    friend Iwektor3D operator*(int v, const Iwektor3D& w);
+
+    /**
+     * @brief operator do mnozenia skalarnego dwoch wektorow 
+     */
+    int operator*(const Iwektor3D& w);
+
+    /**
+     * @brief operator umozliwiajacy wypisywanie danych do strumienia wyjscia 
+     */
+    friend ostream& operator<<(ostream& os, const Iwektor3D& w);
+
+    /**
+     * @brief operator sluzacy do zmieniania wektora na przeciwny
+     */
+    Iwektor3D operator-();
+
+    /**
+     * @brief konstruktor kopiujacy
+     */
+    Iwektor3D(const Iwektor3D& w);
+
+    /**
+     * @brief operator przypisania
+     */
+    Iwektor3D& operator=(const Iwektor3D& w);
+
+    /**
+     * @brief operator indeksowania do pobierania wartosci
+     */
+    const int& operator[](int index)const;
+
+    /**
+     * @brief operator indeksowania do ustawiania wartosci
+     */
+    int& operator[](int index);
 };
 
 Iwektor3D::Iwektor3D(){
@@ -87,9 +123,9 @@ Iwektor3D operator*(int v, const Iwektor3D& w){
     return W;
 }
 
-Iwektor3D Iwektor3D::operator*(const Iwektor3D& w){
-    Iwektor3D W(this->tab[0]*w.tab[0], this->tab[1]*w.tab[1], this->tab[2]*w.tab[2]);
-    return W;
+int Iwektor3D::operator*(const Iwektor3D& w){
+    int a = (this->tab[0] * w.tab[0]) + (this->tab[1] * w.tab[1]) + (this->tab[1] * w.tab[1]);
+    return a;
 }
 
 ostream& operator<<(ostream& os, const Iwektor3D& w){
