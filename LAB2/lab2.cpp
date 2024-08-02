@@ -1,5 +1,3 @@
-// Series.h
-#pragma once
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -19,13 +17,6 @@ public:
 
 ostream& operator<<(ostream& os, const Series& s);
 
-// Histogram.h
-#pragma once
-#include <iostream>
-#include <vector>
-#include "Series.h"
-using namespace std;
-
 class Histogram {
     vector<Series> series_list;
 
@@ -38,15 +29,12 @@ public:
     vector<string> get_series_names() const;
 };
 
-// Series.cpp
-#include "Series.h"
-
 Series::Series() {
-    // Nie ma potrzeby alokowania pamięci tutaj
+
 }
 
 Series::~Series() {
-    // Nie ma potrzeby usuwania pamięci tutaj
+
 }
 
 void Series::append(double value) {
@@ -76,15 +64,12 @@ ostream& operator<<(ostream& os, const Series& s) {
     return os;
 }
 
-// Histogram.cpp
-#include "Histogram.h"
-
 Histogram::Histogram() {
-    // Puste ciało konstruktora
+    
 }
 
 Histogram::~Histogram() {
-    // Puste ciało destruktora
+   
 }
 
 void Histogram::add_series(string name) {
